@@ -25,21 +25,25 @@ const createUsers = (req, res) => {
     });
 };
 
-const add = (req,res)=>{
-    const{A,B}=req.body;
-    if(!A || !B){
-        res.status(404).json({
-            success:false,
-            message:"Data Not Found"
-        });
-    }
-    res.status(200).json({
-        success: true,
-        message:"Added Succesfully" ,
-        data: A + B
+const deleteUsers = (req, res) => {
+  const { id } = req.params;
+
+  const userExists = users.some(u => u.id === parseInt(id));
+
+  if (!userExists) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found"
     });
-    
-}
+  }
+
+  users = users.filter(u => u.id !== parseInt(id));
+
+  res.status(200).json({
+    success: true,
+    message: "User deleted successfully"
+  });
+};
 
 const updateUsers = (req, res) => {
     const { id } = req.params;
@@ -64,4 +68,4 @@ const updateUsers = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUsers,add,updateUsers};
+module.exports = { getUsers, createUsers,updateUsers,deleteUsers};
